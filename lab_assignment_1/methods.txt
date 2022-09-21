@@ -1,0 +1,36 @@
+1. Genome
+* Genome for Brachypodium distachyon (genotype ABR8) and accompanying genome annotation downloaded from Phytozome to plb812 directory within my plb812 conda environment on the HPCC:
+    * Genome: BdistachyonABR8_356_v1.fa.gz
+    * Genome annotation: BdistachyonABR8_356_v1.ABR8.1.gene.gff3.gz
+* Downloaded files unzipped:
+    * B. distachyon genome assembly: unzip download.20220920.173032.zip
+    * B. distachyon genome annotation: unzip download.20220920.173313.zip
+* Directions followed to fa.gz file (genome assembly) and gff3.gz (genome annotation):
+    * B. distachyon genome assembly: ~/plb812/Phytozome/PhytozomeV13/BdistachyonABR8/v1/assembly/BdistachyonABR8_356_v1.fa.gz
+    * B. distachyon genome annotation: ~/plb812/Phytozome/PhytozomeV13/BdistachyonABR8/v1/annotation/BdistachyonABR8_356_v1.ABR8.1.gene.gff3.gz
+* Both .gz files were decompressed:
+    * Assembly: gzip -d BdistachyonABR8_356_v1.fa.gz
+    * Annotation: gzip -d BdistachyonABR8_356_v1.ABR8.1.gene.gff3.gz
+* Files were viewed on command line to obtain screenshots:
+    * Assembly: more BdistachyonABR8_356_v1.fa
+    * Annotation: more BdistachyonABR8_356_v1.ABR8.1.gene.gff3
+
+2. RNA-seq data
+* SRA numbers for both RNA-seq datasets were found on the NCBI SRA Database
+    * SRA Accession #: SRR8618232 (T1 Control RNA-seq dataset)
+    * SRA Accession #: SRR8618235 (T1 Treatment RNA-seq dataset)
+* Datasets were “prefetched” on command line using SRA Accession #’s; done within plb812 directory within my plb812 conda environment on the HPCC:
+    * T1 Control: prefetch SRR8618232
+    * T1 Treatment: prefetch SRR8618235
+* SRA accessions were converted to .fastq files:
+    * T1 Control: fasterq-dump SRR8618232
+    * T1 Treatment: fasterq-dump SRR8618235
+    * From each of these commands, two SRR#######.fastq files were generated, each one representing one of the reads from the paired-end reads included in the whole dataset. For instance, for the SRR8618232 (control) accession, the two fastq files generated were: SRR8618232_1.fastq and SRR8618232_2.fastq
+* “more” command was used to view the contents of these fastq files and obtain the screenshots
+* .fastq files generated were converted to a gzipped format:
+    * T1 Control
+        * gzip SRR8618232_1.fastq > SRR8618232_1.fastq.gz
+        * gzip SRR8618232_2.fastq > SRR8618232_2.fastq.gz
+    * T1 Treatment
+        * gzip SRR8618235_1.fastq > SRR8618235_1.fastq.gz
+        * gzip SRR8618235_2.fastq > SRR8618235_2.fastq.gz
