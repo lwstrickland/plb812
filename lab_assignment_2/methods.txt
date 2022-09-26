@@ -1,0 +1,6 @@
+Methods
+After downloading fastqc within the plb812 conda environment, a shell script was written for a fastqc job that would be run on the HPCC.
+This shell script included all of the relevant headers (assigning the job a maximum time of 4 hours, designating the number of nodes to be used as 1, allowing up to 20 GB to be used for the job, naming the job “run_fastqc.sh”, etc.), as well as directions to where the appropriate datasets (12 total fastq.gz files) could be found and directions for the PATH and LD_LIBRARY_PATH to find and use the fastqc program.
+The fastqc command was written at the bottom with the appropriate parameters (place fastqc.html files in plb812 outdirectory (-o ~/plb812), process 6 files simultaneously (-t 6), etc.).
+To run the fastqc job on all 12 of the designated fastq.gz files, the following command was given: sbatch run_fastqc.sh
+Once the job was successfully performed, all 12 newly produced fastqc.html files, the shell script file (also named “run_fastqc.sh”), and this methods.txt file were copied into the directory named lab_assignment_2, which was pushed to GitHub.
