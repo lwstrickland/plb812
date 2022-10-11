@@ -1,0 +1,18 @@
+The Brachypodium distachyon genome annotation downloaded from Phytozome was converted from a gff3 file to a gtf file: gffread --gtf ~/plb812/Phytozome/PhytozomeV13/BdistachyonABR8/v1/annotation/BdistachyonABR8_356_v1.ABR8.1.gene.gff3 > BdistachyonABR8_356_v1.ABR8.1.gene.gtf
+
+This gtf file was then used to construct 2 tsv files, one containing important information concerning splice sites, and the other exons:
+hisat2_extract_splice_sites.py ~/plb812/Phytozome/PhytozomeV13/BdistachyonABR8/v1/annotation/BdistachyonABR8_356_v1.ABR8.1.gene.gtf > ~/plb812/splicesites.tsv
+hisat2_extract_exons.py ~/plb812/Phytozome/PhytozomeV13/BdistachyonABR8/v1/annotation/BdistachyonABR8_356_v1.ABR8.1.gene.gtf > ~/plb812/exons.tsv
+
+These files were used to inform/annotate the genome index when it was built:
+hisat2-build -p 6 --ss splicesites.tsv --exon exons.tsv ~/plb812/Phytozome/PhytozomeV13/BdistachyonABR8/v1/assembly/BdistachyonABR8_356_v1.fa BdistachyonABR8_index
+
+This generated 8 index files, named accordingly BdistachyonABR8_index.1.ht2, BdistachyonABR8_index.2.ht2, and so on.
+
+This annotated index was used to perform paired-end alignment with HISAT2. Within a job script, a “for” loop was constructed that instructed the program to align the paired-end reads—one dataset at a time, designated by ${i} as an individual within a defined variable—to the annotated index, operating by the following HISAT2 command:
+hisat2 -p 6 -x ~/plb812/lab_assignment_4_stuff/BdistachyonABR8_index -1 ${i}_1_paired.fastq.gz -2 ${i}_2_paired.fastq.gz | samtools view -bh | samtools sort > ${i}_aligned.bam
+
+“samtools view -bh” was used to define the output as a bam file that included the header at the top.
+“samtools sort > ${i}_aligned.bam” was used to sort the alignments accordingly and to name the output bam file (SRR8618232_aligned.bam, SRR8618233_aligned.bam, etc.).
+
+The relevant alignment information was compiled into an Excel file named “alignment_stats.xlsx”.
