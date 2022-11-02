@@ -1,0 +1,10 @@
+Because I was only able to uncover 1 differentially expressed gene (DEG) using the adjusted p-value cutoff from the DESeq2 pipeline (R), I adjusted the parameter for calling DEGs from “padj < 0.05” to simply “pval < 0.05”, or the normal p-value cutoff. With these, the DESeq2 pipeline uncovered 193 DEGs. A tab-separated text file named “DESeq2_results.tsv” was created from the final results table, showing Brachypodium distachyon genes and their differential expression state, along with the appropriate statistics.
+
+After downloading an annotation_info.txt file from Phytozome for the ABR8 genotype of B. distachyon, I formatted it for use in the topGO analysis pipeline (R). The “DESEq2_results.tsv” file was used to read in the results of the prior differential expression analysis. Using the same cutoff as before (p-value < 0.05; log2FoldChange > 0 for higher expressed genes, log2FoldChange < 0 for lower expressed genes), it was determined that of the 193 DEGs, 35 genes exhibited significantly higher expression and 158 genes exhibited significantly lower expression. A separate gene list was created for each of these two categories (upGenes and downGenes, respectively).
+
+Using a Parent-Child Algorithm (Fischer statistical test), GO term enrichment tests were performed for each gene list (upGenes and downGenes) and for each of the three GO term categories: Biological Process (BP), Molecular Function (MF), and Cellular Component (CC). Each of these produced a table including each of the GO terms identified within that gene list, which was converted into a tab-separated text file named based on its contents—“higher_expressed_CC.tsv”, for example, lists the GO terms belonging to the Cellular Component (CC) category identified with the upGenes gene list. A total of 6 files were generated in this manner, which were pushed to GitHub.
+
+* For both higher and lower expressed genes in BP: 562 GO terms were enriched.
+* For both higher and lower expressed genes in MF: 634 GO terms were enriched.
+* For both higher and lower expressed genes in CC: 185 GO terms were enriched.
+
