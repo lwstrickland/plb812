@@ -1,0 +1,24 @@
+The Arabidopsis paired-end read data was fetched from the Sequence Read Archive (SRA) using prefetch, which was subsequently converted to fastq format, generating two fastq files, each one containing one of the sets from the paired-end data:
+* prefetch SRR492407
+* fasterq-dump SRR492407
+
+FastQC was ran on the paired-end reads to asses quality:
+fastqc -t 6 *fastq (run fastqc on both .fastqc files)
+
+Some low quality bases were detected on the trailing ends of the reads. These were trimmed off using trimmomatic (paired-end mode), using a phred score threshold of 25 to define what bases to be trimmed off. A minimum length of 30 bases was defined, meaning that any reads under 30 bases long post-trimming were dropped from the dataset entirely.
+* trimmomatic PE -phred33 -threads 6 SRR492407_1.fastq SRR492407_2.fastq SRR492407_1_paired.fastq SRR492407_1_unpaired.fastq SRR492407_2_paired.fastq SRR492407_2_unpaired.fastq LEADING:25 TRAILING:25 MINLEN:30
+
+FastQC was ran on the newly trimmed paired-end reads to confirm higher data quality:
+* fastqc -t 6 *_paired.fastq
+
+The Arabidopsis thaliana genome, downloaded from Phytozome, was indexed using the Burrows-Wheeler Transform/Alignment indexing method:
+* bwa index ~/plb812/Phytozome/PhytozomeV12/early_release/Athaliana_447_Araport11/assembly/Athaliana_447_TAIR10.fa.gz
+
+The bwa mem command was used to align the paired-end reads to the newly indexed genome, generating a SAM file:
+* bwa mem -t 10 ~/plb812/Phytozome/PhytozomeV12/early_release/Athaliana_447_Araport11/assembly/Athaliana_447_TAIR10.fa.gz SRR492407_1_paired.fastq SRR492407_2_paired.fastq > SRR492407_bwamem_aligned.sam
+
+This SAM alignment file was sorted and converted into a BAM file type:
+* samtools sort -o SRR492407_bwamem_aligned.bam -@ 6 SRR492407_bwamem_aligned.sam
+
+samtools flagstat was used to count the number of alignments made from the paired-end data based on FLAG type:
+* samtools flagstat -@ 6 SRR492407_bwamem_aligned.bam > mapping_statistics.flagstat
