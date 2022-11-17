@@ -1,1 +1,25 @@
-hello
+picard MarkDuplicates used to mark duplicate reads within the paired-end reads aligned back to the indexed Arabidopsis reference genome:
+java -jar ~/miniconda3/pkgs/picard-2.27.4-hdfd78af_0/share/picard-2.27.4-0/picard.jar MarkDuplicates \
+> I=SRR492407_bwamem_aligned.bam \
+> O=SRR492407_bwamem_aligned_DuplicatesMarked.bam \
+> M=marked_dup_metrics.txt
+
+picard AddOrReplaceReadGroups used to add read groups to the duplicate-marked reads:
+java -jar ~/miniconda3/pkgs/picard-2.27.4-hdfd78af_0/share/picard-2.27.4-0/picard.jar AddOrReplaceReadGroups I=SRR492407_bwamem_aligned_DuplicatesMarked.bam \
+> O=SRR492407_bwamem_aligned_DuplicatesMarked_ReadGroupsAdded.bam \
+> RGID=1 \
+> RGLB=lib1 \
+> RGPL=ILLUMINA \
+> RGPU=NA \
+> RGSM=WS2
+
+Index and dictionary files made for GATK usage from Arabidopsis reference genome
+Index: samtools faidx Athaliana_447_TAIR10.fa
+Dictionary: gatk CreateSequenceDictionary -R Athaliana_447_TAIR10.fa
+
+Variants called with GATK (in newly made gatk conda environment)
+gatk HaplotypeCaller \
+> -R ~/plb812/Phytozome/PhytozomeV12/early_release/Athaliana_447_Araport11/assembly/Athaliana_447_TAIR10.fa \
+> -I SRR492407_bwamem_aligned_DuplicatesMarked_ReadGroupsAdded.bam \
+> -O SRR492407_HaplotypesCalled.vcf
+
