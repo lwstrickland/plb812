@@ -1,0 +1,9 @@
+conda install orthofinder was used to download the orthofinder program in its own conda environment.
+
+Three protein datasets were downloaded from Phytozome, one from each of the following species: Arabidopsis thaliana, Amborella trichopoda, and Oryzae sativa. These were decompressed into simple .fa files and renamed -> Athaliana.fa, Atrichopoda.fa, and Osativa.fa. These were placed into their own directory (named 'orthofinder_usage').
+
+Orthofinder was used to identify orthogroups between these three species with the following usage: orthofinder -f orthofinder_usage
+
+This yielded a number of directories, one of which was named Phylogenetic_Heirarchical_Orthogroups, containing a tab-separated filed titled N0.tsv.
+This file contained the 17404 total orthogroups identified (counted with 'wc -l N0.tsv').
+Within this list, a rice gene within the orthogroup for the Arabidopsis gene encoding chalcone synthase was identified (identified with 'grep AT5G13930 N0.tsv').

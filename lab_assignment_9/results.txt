@@ -1,0 +1,4 @@
+Lab Assignment 9 results:
+* # of orthogroups identified between Arabidopsis thaliana, Amborella trichopoda, and Oryzae sativa: 17404
+
+* Rice gene identified within the orthogroup for Arabidopsis chalcone synthase: LOC_Os11g32650.1
